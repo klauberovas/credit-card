@@ -1,7 +1,12 @@
 import './App.css';
+import { CreditCardForm } from './components/CreditCardForm/CreditCardForm';
 
 function App() {
-  return <></>;
+  return (
+    <>
+      <CreditCardForm />
+    </>
+  );
 }
 
 export default App;
