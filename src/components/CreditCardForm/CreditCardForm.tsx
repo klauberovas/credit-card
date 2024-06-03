@@ -2,13 +2,13 @@ import './style.css';
 import { useRef, ChangeEvent, MutableRefObject, useEffect } from 'react';
 
 export const CreditCardForm = (): JSX.Element => {
-  const inputRef1 = useRef<HTMLInputElement>(null!);
-  const inputRef2 = useRef<HTMLInputElement>(null!);
-  const inputRef3 = useRef<HTMLInputElement>(null!);
-  const inputRef4 = useRef<HTMLInputElement>(null!);
+  const inputRefs: MutableRefObject<HTMLInputElement>[] = [];
+  for (let i = 0; i < 4; i++) {
+    inputRefs.push(useRef<HTMLInputElement>(null!));
+  }
 
   useEffect(() => {
-    inputRef1.current.focus();
+    inputRefs[0].current.focus();
   }, []);
 
   const handleInput = (
@@ -24,35 +24,16 @@ export const CreditCardForm = (): JSX.Element => {
     <div className="card">
       <h3>Zadejte číslo karty:</h3>
       <div className="card-container">
-        <input
-          ref={inputRef1}
-          onChange={(e) => handleInput(e, inputRef2)}
-          type="text"
-          maxLength={4}
-          className="card__input"
-        />
-        <input
-          ref={inputRef2}
-          onChange={(e) => handleInput(e, inputRef3)}
-          type="text"
-          maxLength={4}
-          className="card__input"
-        />
-        <input
-          ref={inputRef3}
-          onChange={(e) => handleInput(e, inputRef4)}
-          type="text"
-          maxLength={4}
-          className="card__input"
-        />
-
-        <input
-          ref={inputRef4}
-          onChange={(e) => handleInput(e, inputRef4)}
-          type="text"
-          maxLength={4}
-          className="card__input"
-        />
+        {inputRefs.map((inputRef, index) => (
+          <input
+            key={index}
+            ref={inputRef}
+            onChange={(e) => handleInput(e, inputRefs[index + 1])}
+            type="text"
+            maxLength={4}
+            className="card__input"
+          />
+        ))}
       </div>
     </div>
   );
