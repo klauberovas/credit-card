@@ -1,24 +1,26 @@
-import './style.css';
-import { useRef, ChangeEvent, MutableRefObject, useEffect } from 'react';
+import './style.css'
+import { useRef, ChangeEvent, MutableRefObject, useEffect } from 'react'
 
 export const CreditCardForm = (): JSX.Element => {
-  const inputRefs: MutableRefObject<HTMLInputElement>[] = [];
-  for (let i = 0; i < 4; i++) {
-    inputRefs.push(useRef<HTMLInputElement>(null!));
-  }
+  const inputRef1 = useRef<HTMLInputElement>(null!)
+  const inputRef2 = useRef<HTMLInputElement>(null!)
+  const inputRef3 = useRef<HTMLInputElement>(null!)
+  const inputRef4 = useRef<HTMLInputElement>(null!)
+
+  const inputRefs = [inputRef1, inputRef2, inputRef3, inputRef4]
 
   useEffect(() => {
-    inputRefs[0].current.focus();
-  }, []);
+    inputRefs[0].current.focus()
+  })
 
   const handleInput = (
     e: ChangeEvent<HTMLInputElement>,
-    nextRef: MutableRefObject<HTMLInputElement>,
+    nextRef: MutableRefObject<HTMLInputElement>
   ): void => {
     if (e.target.value.length >= 4) {
-      nextRef.current.focus();
+      nextRef.current.focus()
     }
-  };
+  }
 
   return (
     <div className="card">
@@ -36,5 +38,5 @@ export const CreditCardForm = (): JSX.Element => {
         ))}
       </div>
     </div>
-  );
-};
+  )
+}
