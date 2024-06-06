@@ -1,5 +1,5 @@
 import './style.css'
-import { useRef, ChangeEvent, MutableRefObject, useEffect } from 'react'
+import { useRef, ChangeEvent, useEffect } from 'react'
 
 export const CreditCardForm = (): JSX.Element => {
   const inputRef1 = useRef<HTMLInputElement>(null!)
@@ -11,14 +11,17 @@ export const CreditCardForm = (): JSX.Element => {
 
   useEffect(() => {
     inputRefs[0].current.focus()
-  })
+  }, [])
 
   const handleInput = (
     e: ChangeEvent<HTMLInputElement>,
-    nextRef: MutableRefObject<HTMLInputElement>
+    index: number
   ): void => {
-    if (e.target.value.length >= 4) {
-      nextRef.current.focus()
+    const newValue = e.target.value.replace(/\D/g, '')
+    e.target.value = newValue
+
+    if (newValue.length >= 4 && index < inputRefs.length - 1) {
+      inputRefs[index + 1].current.focus()
     }
   }
 
@@ -30,7 +33,7 @@ export const CreditCardForm = (): JSX.Element => {
           <input
             key={index}
             ref={inputRef}
-            onChange={(e) => handleInput(e, inputRefs[index + 1])}
+            onChange={(e) => handleInput(e, index)}
             type="text"
             maxLength={4}
             className="card__input"
