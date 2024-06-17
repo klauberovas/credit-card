@@ -2,26 +2,29 @@ import './style.css'
 import { useRef, ChangeEvent, useEffect } from 'react'
 
 export const CreditCardForm = (): JSX.Element => {
-  const inputRef1 = useRef<HTMLInputElement>(null!)
-  const inputRef2 = useRef<HTMLInputElement>(null!)
-  const inputRef3 = useRef<HTMLInputElement>(null!)
-  const inputRef4 = useRef<HTMLInputElement>(null!)
-
-  const inputRefs = [inputRef1, inputRef2, inputRef3, inputRef4]
+  const ref = useRef<HTMLInputElement[]>([])
+  const pushRef = (el: HTMLInputElement) => {
+    if (el && !ref.current.includes(el)) {
+      ref.current.push(el)
+    }
+  }
 
   useEffect(() => {
-    inputRefs[0].current.focus()
+    if (ref.current[0]) {
+      ref.current[0].focus()
+    }
   }, [])
 
   const handleInput = (
     e: ChangeEvent<HTMLInputElement>,
     index: number
   ): void => {
-    const newValue = e.target.value.replace(/\D/g, '')
+    const re = new RegExp(/\D/g)
+    const newValue = e.target.value.replace(re, '')
     e.target.value = newValue
 
-    if (newValue.length >= 4 && index < inputRefs.length - 1) {
-      inputRefs[index + 1].current.focus()
+    if (newValue.length >= 4 && index < ref.current.length - 1) {
+      ref.current[index + 1].focus()
     }
   }
 
@@ -29,10 +32,10 @@ export const CreditCardForm = (): JSX.Element => {
     <div className="card">
       <h3>Zadejte číslo karty:</h3>
       <div className="card-container">
-        {inputRefs.map((inputRef, index) => (
+        {Array.from({ length: 4 }).map((_, index) => (
           <input
             key={index}
-            ref={inputRef}
+            ref={pushRef}
             onChange={(e) => handleInput(e, index)}
             type="text"
             maxLength={4}
