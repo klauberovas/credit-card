@@ -1,0 +1,10 @@
+.card-container {
+  max-width: 40rem;
+  display: flex;
+  gap: 20px;
+}
+
+.card__input {
+  width: 3rem;
+  text-align: center;
+}
